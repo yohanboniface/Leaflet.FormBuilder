@@ -1,0 +1,14 @@
+{
+  "name": "leaflet-formbuilder",
+  "version": "0.0.1",
+  "description": "Helpers to build forms in Leaflet",
+  "main": "Leaflet.FormBuilder.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "leaflet"
+  ],
+  "author": "Yohan Boniface",
+  "license": "WTFPL"
+}
