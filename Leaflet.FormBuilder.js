@@ -164,7 +164,8 @@ L.FormBuilder.Element = L.Class.extend({
 
     buildLabel: function () {
         if (this.options.label) {
-            this.label = L.DomUtil.add('label', '', this.formBuilder.form, this.options.label);
+            this.label = L.DomUtil.create('label', '', this.formBuilder.form);
+            this.label.innerHTML = this.options.label;
             if (this.options.helpEntries) {
                 this.map.help.button(this.label, this.options.helpEntries);
             }
@@ -255,12 +256,10 @@ L.FormBuilder.Input = L.FormBuilder.Element.extend({
     },
 
     onKeyDown: function (e) {
-        var key = e.keyCode;
-        if (key == L.S.Keys.ENTER) {
+        var key = e.keyCode,
+            ENTER = 13;
+        if (key == ENTER) {
             L.DomEvent.stop(e);
-            this.finish();
-        }
-        if (key == L.S.Keys.S && e.ctrlKey) {
             this.finish();
         }
     }
