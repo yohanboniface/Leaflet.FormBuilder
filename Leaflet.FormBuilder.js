@@ -52,6 +52,9 @@ L.FormBuilder = L.Class.extend({
         }
         this.helpers[field] = helper;
         helper.on('synced', function () {
+            if (helper.options.callback) {
+                helper.options.callback.call(helper.options.callbackContext || this.obj);
+            }
             if (this.options.callback) {
                 this.options.callback.call(this.options.callbackContext || this.obj, field);
             }
