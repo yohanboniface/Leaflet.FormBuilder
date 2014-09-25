@@ -1,6 +1,6 @@
 {
   "name": "leaflet-formbuilder",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Helpers to build forms in Leaflet",
   "main": "Leaflet.FormBuilder.js",
   "scripts": {
@@ -9,6 +9,10 @@
   "keywords": [
     "leaflet"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/yohanboniface/Leaflet.FormBuilder.git"
+  },
   "author": "Yohan Boniface",
   "license": "WTFPL"
 }
