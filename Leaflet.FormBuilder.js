@@ -354,7 +354,7 @@ L.FormBuilder.CheckBox = L.FormBuilder.Element.extend({
 
 });
 
-L.FormBuilder.SelectAbstract = L.FormBuilder.Element.extend({
+L.FormBuilder.Select = L.FormBuilder.Element.extend({
 
     selectOptions: [
         ['value', 'label']
@@ -369,7 +369,7 @@ L.FormBuilder.SelectAbstract = L.FormBuilder.Element.extend({
     },
 
     getOptions: function () {
-        return this.selectOptions;
+        return this.options.selectOptions || this.selectOptions;
     },
 
     fetch: function () {
@@ -414,7 +414,15 @@ L.FormBuilder.SelectAbstract = L.FormBuilder.Element.extend({
 
 });
 
-L.FormBuilder.NullableBoolean = L.FormBuilder.SelectAbstract.extend({
+L.FormBuilder.IntSelect = L.FormBuilder.Select.extend({
+
+    value: function () {
+        return parseInt(L.FormBuilder.Select.prototype.value.apply(this), 10);
+    }
+
+});
+
+L.FormBuilder.NullableBoolean = L.FormBuilder.Select.extend({
     selectOptions: [
         [undefined, 'inherit'],
         [true, 'yes'],
