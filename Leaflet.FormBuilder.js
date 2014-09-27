@@ -169,9 +169,6 @@ L.FormBuilder.Element = L.Class.extend({
         if (this.options.label) {
             this.label = L.DomUtil.create('label', '', this.formBuilder.form);
             this.label.innerHTML = this.options.label;
-            if (this.options.helpEntries) {
-                this.map.help.button(this.label, this.options.helpEntries);
-            }
         }
     },
 
