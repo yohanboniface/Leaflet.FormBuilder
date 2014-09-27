@@ -190,7 +190,7 @@ L.FormBuilder.Element = L.Class.extend({
 L.FormBuilder.Textarea = L.FormBuilder.Element.extend({
 
     build: function () {
-        this.input = L.DomUtil.create('textarea', '', this.form);
+        this.input = L.DomUtil.create('textarea', this.options.className || '', this.form);
         if (this.options.placeholder) {
             this.input.placeholder = this.options.placeholder;
         }
@@ -227,7 +227,7 @@ L.FormBuilder.Input = L.FormBuilder.Element.extend({
         if (this.options.wrapper) {
             this.wrapper = L.DomUtil.create(this.options.wrapper, this.options.wrapperClass || '', this.form);
         }
-        this.input = L.DomUtil.create('input', '', this.wrapper || this.form);
+        this.input = L.DomUtil.create('input', this.options.className || '', this.wrapper || this.form);
         this.input.type = this.type();
         this.input.name = this.name;
         this.input._helper = this;
@@ -331,7 +331,7 @@ L.FormBuilder.CheckBox = L.FormBuilder.Element.extend({
 
     build: function () {
         var container = L.DomUtil.create('div', 'formbox', this.form);
-        this.input = L.DomUtil.create('input', '', container);
+        this.input = L.DomUtil.create('input', this.options.className || '', container);
         this.input.type = 'checkbox';
         this.input.name = this.name;
         this.input._helper = this;
