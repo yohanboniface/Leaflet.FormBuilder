@@ -123,6 +123,10 @@ L.FormBuilder = L.Class.extend({
                 this.helpers[key].sync();
             }
         }
+    },
+
+    finish: function () {
+        this.fire('finish');
     }
 
 });
