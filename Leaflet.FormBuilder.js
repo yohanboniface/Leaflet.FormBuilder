@@ -16,15 +16,19 @@ L.FormBuilder = L.Class.extend({
     initialize: function (obj, fields, options) {
         L.setOptions(this, options);
         this.obj = obj;
-        this.fields = fields;
         this.form = L.DomUtil.create('form', this.options.className);
-        this.helpers = {};
+        this.setFields(fields);
         if (this.options.id) {
             this.form.id = this.options.id;
         }
         if (this.options.className) {
             L.DomUtil.addClass(this.form, this.options.className);
         }
+    },
+
+    setFields: function (fields) {
+        this.fields = fields || [];
+        this.helpers = {};
     },
 
     build: function () {
