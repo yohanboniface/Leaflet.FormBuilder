@@ -27,7 +27,7 @@ L.FormBuilder = L.Class.extend({
     },
 
     setFields: function (fields) {
-        this.fields = fields || [];
+        this.fields = fields || [];
         this.helpers = {};
     },
 
@@ -43,7 +43,6 @@ L.FormBuilder = L.Class.extend({
         var type, helper, options;
         if (field instanceof Array) {
             options = field[1] || {};
-            helpText = field[2] || null;
             field = field[0];
         } else {
             options = this.defaultOptions[this.getName(field)] || {};
@@ -78,7 +77,7 @@ L.FormBuilder = L.Class.extend({
     getter: function (field) {
         var path = field.split('.'),
             value = this.obj;
-        for (var i=0, l=path.length; i<l; i++) {
+        for (var i = 0, l = path.length; i < l; i++) {
             value = value[path[i]];
         }
         return value;
@@ -88,9 +87,9 @@ L.FormBuilder = L.Class.extend({
         var path = field.split('.'),
             obj = this.obj,
                 what;
-        for (var i=0, l=path.length; i<l; i++) {
+        for (var i = 0, l = path.length; i < l; i++) {
             what = path[i];
-            if (what === path[l-1]) {
+            if (what === path[l - 1]) {
                 if (typeof value === 'undefined') {
                     delete obj[what];
                 } else {
@@ -111,7 +110,7 @@ L.FormBuilder = L.Class.extend({
 
     getName: function (field) {
         var fieldEls = field.split('.');
-        return fieldEls[fieldEls.length-1];
+        return fieldEls[fieldEls.length - 1];
     },
 
     fetchAll: function () {
@@ -199,7 +198,7 @@ L.FormBuilder.Element = L.Class.extend({
 L.FormBuilder.Textarea = L.FormBuilder.Element.extend({
 
     build: function () {
-        this.input = L.DomUtil.create('textarea', this.options.className || '', this.form);
+        this.input = L.DomUtil.create('textarea', this.options.className || '', this.form);
         if (this.options.placeholder) {
             this.input.placeholder = this.options.placeholder;
         }
@@ -222,7 +221,7 @@ L.FormBuilder.Textarea = L.FormBuilder.Element.extend({
     onKeyPress: function (e) {
         var key = e.keyCode,
             ENTER = 13;
-        if (key == ENTER && (e.shiftKey || e.ctrlKey)) {
+        if (key === ENTER && (e.shiftKey || e.ctrlKey)) {
             L.DomEvent.stop(e);
             this.finish();
         }
@@ -236,7 +235,7 @@ L.FormBuilder.Input = L.FormBuilder.Element.extend({
         if (this.options.wrapper) {
             this.wrapper = L.DomUtil.create(this.options.wrapper, this.options.wrapperClass || '', this.form);
         }
-        this.input = L.DomUtil.create('input', this.options.className || '', this.wrapper || this.form);
+        this.input = L.DomUtil.create('input', this.options.className || '', this.wrapper || this.form);
         this.input.type = this.type();
         this.input.name = this.name;
         this.input._helper = this;
@@ -267,7 +266,7 @@ L.FormBuilder.Input = L.FormBuilder.Element.extend({
     onKeyDown: function (e) {
         var key = e.keyCode,
             ENTER = 13;
-        if (key == ENTER) {
+        if (key === ENTER) {
             L.DomEvent.stop(e);
             this.finish();
         }
@@ -340,7 +339,7 @@ L.FormBuilder.CheckBox = L.FormBuilder.Element.extend({
 
     build: function () {
         var container = L.DomUtil.create('div', 'formbox', this.form);
-        this.input = L.DomUtil.create('input', this.options.className || '', container);
+        this.input = L.DomUtil.create('input', this.options.className || '', container);
         this.input.type = 'checkbox';
         this.input.name = this.name;
         this.input._helper = this;
@@ -378,7 +377,7 @@ L.FormBuilder.Select = L.FormBuilder.Element.extend({
     },
 
     getOptions: function () {
-        return this.options.selectOptions || this.selectOptions;
+        return this.options.selectOptions || this.selectOptions;
     },
 
     fetch: function () {
@@ -388,7 +387,7 @@ L.FormBuilder.Select = L.FormBuilder.Element.extend({
     buildOptions: function () {
         this.select.innerHTML = '';
         var options = this.getOptions();
-        for (var i=0, l=options.length; i<l; i++) {
+        for (var i = 0, l = options.length; i < l; i++) {
             this.buildOption(options[i][0], options[i][1]);
         }
     },
