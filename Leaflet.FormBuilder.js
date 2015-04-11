@@ -47,7 +47,6 @@ L.FormBuilder = L.Class.extend({
         } else {
             options = this.defaultOptions[this.getName(field)] || {};
         }
-        options = L.extend({}, this.options, options);
         type = options.handler || 'Input';
         if (typeof type === "string" && L.FormBuilder[type]) {
             helper = new L.FormBuilder[type](this, field, options);
@@ -139,22 +138,22 @@ L.FormBuilder = L.Class.extend({
 L.FormBuilder.Element = L.Class.extend({
     includes: [L.Mixin.Events],
 
-    initialize: function (formBuilder, field, options) {
-        this.formBuilder = formBuilder;
-        this.obj = this.formBuilder.obj;
-        this.form = this.formBuilder.form;
+    initialize: function (builder, field, options) {
+        this.builder = builder;
+        this.obj = this.builder.obj;
+        this.form = this.builder.form;
         this.field = field;
         this.options = options;
         this.fieldEls = this.field.split('.');
-        this.name = this.formBuilder.getName(field);
+        this.name = this.builder.getName(field);
         this.buildLabel();
         this.build();
         this.buildHelpText();
-        this.formBuilder.fire('element:init', {element: this});
+        this.builder.fire('element:init', {element: this});
     },
 
     get: function () {
-        return this.formBuilder.getter(this.field);
+        return this.builder.getter(this.field);
     },
 
     toHTML: function () {
@@ -171,12 +170,12 @@ L.FormBuilder.Element = L.Class.extend({
     },
 
     set: function () {
-        this.formBuilder.setter(this.field, this.toJS());
+        this.builder.setter(this.field, this.toJS());
     },
 
     buildLabel: function () {
         if (this.options.label) {
-            this.label = L.DomUtil.create('label', '', this.formBuilder.form);
+            this.label = L.DomUtil.create('label', '', this.builder.form);
             this.label.innerHTML = this.options.label;
         }
     },
@@ -191,7 +190,7 @@ L.FormBuilder.Element = L.Class.extend({
     fetch: function () {},
 
     finish: function () {
-        this.formBuilder.finish();
+        this.builder.finish();
     }
 
 });
