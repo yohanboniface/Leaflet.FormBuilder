@@ -72,6 +72,7 @@ L.FormBuilder = L.Class.extend({
         //         L.DomEvent.stop(e);
         //     }
         // }, this);
+        return helper;
     },
 
     getter: function (field) {
