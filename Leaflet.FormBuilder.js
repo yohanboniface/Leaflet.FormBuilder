@@ -47,6 +47,7 @@ L.FormBuilder = L.Class.extend({
         } else {
             options = this.defaultOptions[this.getName(field)] || {};
         }
+        options = L.extend({}, this.options, options);
         type = options.handler || 'Input';
         if (typeof type === "string" && L.FormBuilder[type]) {
             helper = new L.FormBuilder[type](this, field, options);
