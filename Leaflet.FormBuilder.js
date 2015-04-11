@@ -40,6 +40,8 @@ L.FormBuilder = L.Class.extend({
     },
 
     buildField: function (field) {
+        // field can be either a string like "option.name" or a full definition array,
+        // like ['options.tilelayer.tms', {handler: 'CheckBox', helpText: 'TMS format'}]
         var type, helper, options;
         if (field instanceof Array) {
             options = field[1] || {};
@@ -54,24 +56,7 @@ L.FormBuilder = L.Class.extend({
             helper = new type(this, field, options);
         }
         this.helpers[field] = helper;
-        helper.on('synced', function () {
-            if (helper.options.callback) {
-                helper.options.callback.call(helper.options.callbackContext || this.obj);
-            }
-            if (this.options.callback) {
-                this.options.callback.call(this.options.callbackContext || this.obj, field);
-            }
-            this.fire('synced', {field: field});
-            if (this.obj.fire) this.obj.fire('synced', {field: field});
-        }, this);
-        // L.DomEvent.on(input, 'keydown', function (e) {
-        //     var key = e.keyCode,
-        //         ESC = 27;
-        //     if (key === ESC) {
-        //         this.resetField(field);
-        //         L.DomEvent.stop(e);
-        //     }
-        // }, this);
+        this.on('postsync', this.onPostSync);
         return helper;
     },
 
@@ -130,8 +115,13 @@ L.FormBuilder = L.Class.extend({
         }
     },
 
-    finish: function () {
-        this.fire('finish');
+    onPostSync: function (e) {
+        if (e.helper.options.callback) {
+            e.helper.options.callback.call(e.helper.options.callbackContext || this.obj, e);
+        }
+        if (this.options.callback) {
+            this.options.callback.call(this.options.callbackContext || this.obj, e);
+        }
     }
 
 });
@@ -150,7 +140,15 @@ L.FormBuilder.Element = L.Class.extend({
         this.buildLabel();
         this.build();
         this.buildHelpText();
-        this.builder.fire('element:init', {element: this});
+        this.fireAndForward('helper:init');
+    },
+
+    fireAndForward: function (type, e) {
+        e = e || {};
+        e.helper = this;
+        this.fire(type, e);
+        this.builder.fire(type, e);
+        if (this.obj.fire) this.obj.fire(type, e);
     },
 
     get: function () {
@@ -166,8 +164,9 @@ L.FormBuilder.Element = L.Class.extend({
     },
 
     sync: function () {
+        this.fireAndForward('presync');
         this.set();
-        this.fire('synced');
+        this.fireAndForward('postsync');
     },
 
     set: function () {
@@ -191,7 +190,7 @@ L.FormBuilder.Element = L.Class.extend({
     fetch: function () {},
 
     finish: function () {
-        this.builder.finish();
+        this.fireAndForward('finish');
     }
 
 });
