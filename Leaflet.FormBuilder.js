@@ -63,6 +63,7 @@ L.FormBuilder = L.Class.extend({
                 this.options.callback.call(this.options.callbackContext || this.obj, field);
             }
             this.fire('synced', {field: field});
+            if (this.obj.fire) this.obj.fire('synced', {field: field});
         }, this);
         // L.DomEvent.on(input, 'keydown', function (e) {
         //     var key = e.keyCode,
