@@ -243,10 +243,10 @@ L.FormBuilder.Input = L.FormBuilder.Element.extend({
         if (this.options.placeholder) {
             this.input.placeholder = this.options.placeholder;
         }
-        if (this.options.min != undefined) {
+        if (this.options.min !== undefined) {
             this.input.min = this.options.min;
         }
-        if (this.options.max != undefined) {
+        if (this.options.max !== undefined) {
             this.input.max = this.options.max;
         }
         if (this.options.step) {
