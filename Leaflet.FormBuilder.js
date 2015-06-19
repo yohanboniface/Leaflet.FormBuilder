@@ -243,6 +243,15 @@ L.FormBuilder.Input = L.FormBuilder.Element.extend({
         if (this.options.placeholder) {
             this.input.placeholder = this.options.placeholder;
         }
+        if (this.options.min != undefined) {
+            this.input.min = this.options.min;
+        }
+        if (this.options.max != undefined) {
+            this.input.max = this.options.max;
+        }
+        if (this.options.step) {
+            this.input.step = this.options.step;
+        }
         L.DomEvent.on(this.input, this.getSyncEvent(), this.sync, this);
         L.DomEvent.on(this.input, 'keydown', this.onKeyDown, this);
     },
