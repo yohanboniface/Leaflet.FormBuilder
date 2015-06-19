@@ -1,6 +1,6 @@
 {
   "name": "leaflet-formbuilder",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Helpers to build forms in Leaflet",
   "main": "Leaflet.FormBuilder.js",
   "scripts": {
