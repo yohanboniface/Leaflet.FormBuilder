@@ -137,6 +137,7 @@ L.FormBuilder.Element = L.Class.extend({
         this.options = options;
         this.fieldEls = this.field.split('.');
         this.name = this.builder.getName(field);
+        this.parentNode = this.options.wrapper ? L.DomUtil.create(this.options.wrapper, this.options.wrapperClass || '', this.form) : this.form;
         this.buildLabel();
         this.build();
         this.buildHelpText();
@@ -175,14 +176,14 @@ L.FormBuilder.Element = L.Class.extend({
 
     buildLabel: function () {
         if (this.options.label) {
-            this.label = L.DomUtil.create('label', '', this.builder.form);
+            this.label = L.DomUtil.create('label', '', this.builder.parentNode);
             this.label.innerHTML = this.options.label;
         }
     },
 
     buildHelpText: function () {
         if (this.options.helpText) {
-            var container = L.DomUtil.create('small', 'help-text', this.form);
+            var container = L.DomUtil.create('small', 'help-text', this.parentNode);
             container.innerHTML = this.options.helpText;
         }
     },
@@ -198,7 +199,7 @@ L.FormBuilder.Element = L.Class.extend({
 L.FormBuilder.Textarea = L.FormBuilder.Element.extend({
 
     build: function () {
-        this.input = L.DomUtil.create('textarea', this.options.className || '', this.form);
+        this.input = L.DomUtil.create('textarea', this.options.className || '', this.parentNode);
         if (this.options.placeholder) {
             this.input.placeholder = this.options.placeholder;
         }
@@ -232,10 +233,7 @@ L.FormBuilder.Textarea = L.FormBuilder.Element.extend({
 L.FormBuilder.Input = L.FormBuilder.Element.extend({
 
     build: function () {
-        if (this.options.wrapper) {
-            this.wrapper = L.DomUtil.create(this.options.wrapper, this.options.wrapperClass || '', this.form);
-        }
-        this.input = L.DomUtil.create('input', this.options.className || '', this.wrapper || this.form);
+        this.input = L.DomUtil.create('input', this.options.className || '', this.parentNode);
         this.input.type = this.type();
         this.input.name = this.name;
         this.input._helper = this;
@@ -347,7 +345,7 @@ L.FormBuilder.BlurFloatInput = L.FormBuilder.BlurInput.extend({
 L.FormBuilder.CheckBox = L.FormBuilder.Element.extend({
 
     build: function () {
-        var container = L.DomUtil.create('div', 'formbox', this.form);
+        var container = L.DomUtil.create('div', 'formbox', this.parentNode);
         this.input = L.DomUtil.create('input', this.options.className || '', container);
         this.input.type = 'checkbox';
         this.input.name = this.name;
@@ -378,7 +376,7 @@ L.FormBuilder.Select = L.FormBuilder.Element.extend({
     ],
 
     build: function () {
-        this.select = L.DomUtil.create('select', '', this.form);
+        this.select = L.DomUtil.create('select', '', this.parentNode);
         this.select.name = this.name;
         this.validValues = [];
         this.buildOptions();
