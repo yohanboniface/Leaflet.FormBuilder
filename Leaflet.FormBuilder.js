@@ -176,7 +176,7 @@ L.FormBuilder.Element = L.Class.extend({
 
     buildLabel: function () {
         if (this.options.label) {
-            this.label = L.DomUtil.create('label', '', this.builder.parentNode);
+            this.label = L.DomUtil.create('label', '', this.parentNode);
             this.label.innerHTML = this.options.label;
         }
     },
