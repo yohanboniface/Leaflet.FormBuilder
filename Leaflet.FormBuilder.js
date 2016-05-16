@@ -1,6 +1,5 @@
 
-L.FormBuilder = L.Class.extend({
-    includes: [L.Mixin.Events],
+L.FormBuilder = L.Evented.extend({
 
     options: {
         className: 'leaflet-form'
@@ -50,7 +49,7 @@ L.FormBuilder = L.Class.extend({
             options = this.defaultOptions[this.getName(field)] || {};
         }
         type = options.handler || 'Input';
-        if (typeof type === "string" && L.FormBuilder[type]) {
+        if (typeof type === 'string' && L.FormBuilder[type]) {
             helper = new L.FormBuilder[type](this, field, options);
         } else {
             helper = new type(this, field, options);
@@ -126,8 +125,7 @@ L.FormBuilder = L.Class.extend({
 
 });
 
-L.FormBuilder.Element = L.Class.extend({
-    includes: [L.Mixin.Events],
+L.FormBuilder.Element = L.Evented.extend({
 
     initialize: function (builder, field, options) {
         this.builder = builder;
@@ -137,7 +135,7 @@ L.FormBuilder.Element = L.Class.extend({
         this.options = options;
         this.fieldEls = this.field.split('.');
         this.name = this.builder.getName(field);
-        this.parentNode = this.options.wrapper ? L.DomUtil.create(this.options.wrapper, this.options.wrapperClass || '', this.form) : this.form;
+        this.parentNode = this.getParentNode();
         this.buildLabel();
         this.build();
         this.buildHelpText();
@@ -150,6 +148,10 @@ L.FormBuilder.Element = L.Class.extend({
         this.fire(type, e);
         this.builder.fire(type, e);
         if (this.obj.fire) this.obj.fire(type, e);
+    },
+
+    getParentNode: function () {
+        return this.options.wrapper ? L.DomUtil.create(this.options.wrapper, this.options.wrapperClass || '', this.form) : this.form;
     },
 
     get: function () {
@@ -174,16 +176,24 @@ L.FormBuilder.Element = L.Class.extend({
         this.builder.setter(this.field, this.toJS());
     },
 
+    getLabelParent: function () {
+        return this.parentNode;
+    },
+
+    getHelpTextParent: function () {
+        return this.parentNode;
+    },
+
     buildLabel: function () {
         if (this.options.label) {
-            this.label = L.DomUtil.create('label', '', this.parentNode);
+            this.label = L.DomUtil.create('label', '', this.getLabelParent());
             this.label.innerHTML = this.options.label;
         }
     },
 
     buildHelpText: function () {
         if (this.options.helpText) {
-            var container = L.DomUtil.create('small', 'help-text', this.parentNode);
+            var container = L.DomUtil.create('small', 'help-text', this.getHelpTextParent());
             container.innerHTML = this.options.helpText;
         }
     },
@@ -200,9 +210,7 @@ L.FormBuilder.Textarea = L.FormBuilder.Element.extend({
 
     build: function () {
         this.input = L.DomUtil.create('textarea', this.options.className || '', this.parentNode);
-        if (this.options.placeholder) {
-            this.input.placeholder = this.options.placeholder;
-        }
+        if (this.options.placeholder) this.input.placeholder = this.options.placeholder;
         this.fetch();
         L.DomEvent.on(this.input, 'input', this.sync, this);
         L.DomEvent.on(this.input, 'keypress', this.onKeyPress, this);
@@ -345,7 +353,7 @@ L.FormBuilder.BlurFloatInput = L.FormBuilder.BlurInput.extend({
 L.FormBuilder.CheckBox = L.FormBuilder.Element.extend({
 
     build: function () {
-        var container = L.DomUtil.create('div', 'formbox', this.parentNode);
+        var container = L.DomUtil.create('div', 'checkbox-wrapper', this.parentNode);
         this.input = L.DomUtil.create('input', this.options.className || '', container);
         this.input.type = 'checkbox';
         this.input.name = this.name;
@@ -410,7 +418,7 @@ L.FormBuilder.Select = L.FormBuilder.Element.extend({
     },
 
     value: function () {
-        return this.select[this.select.selectedIndex].value;
+        if (this.select[this.select.selectedIndex]) return this.select[this.select.selectedIndex].value;
     },
 
     getDefault: function () {
