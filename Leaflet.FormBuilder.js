@@ -35,6 +35,7 @@ L.FormBuilder = L.Evented.extend({
         for (var idx in this.fields) {
             this.buildField(this.fields[idx]);
         }
+        this.on('postsync', this.onPostSync);
         return this.form;
     },
 
@@ -55,7 +56,6 @@ L.FormBuilder = L.Evented.extend({
             helper = new type(this, field, options);
         }
         this.helpers[field] = helper;
-        this.on('postsync', this.onPostSync);
         return helper;
     },
 
