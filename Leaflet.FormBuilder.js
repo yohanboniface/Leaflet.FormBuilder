@@ -401,9 +401,12 @@ L.FormBuilder.Select = L.FormBuilder.Element.extend({
 
     buildOptions: function () {
         this.select.innerHTML = '';
-        var options = this.getOptions();
+        var options = this.getOptions(),
+            option;
         for (var i = 0, l = options.length; i < l; i++) {
-            this.buildOption(options[i][0], options[i][1]);
+            option = options[i];
+            if (typeof option === 'string') this.buildOption(option, option);
+            else this.buildOption(option[0], option[1]);
         }
     },
 
