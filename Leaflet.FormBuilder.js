@@ -87,9 +87,7 @@ L.FormBuilder = L.Evented.extend({
     },
 
     resetField: function (field) {
-        var backup = this.backup[field],
-            input = this.inputs[field];
-        input.value = backup;
+        var backup = this.helpers[field].backup;
         this.setter(field, backup);
     },
 
