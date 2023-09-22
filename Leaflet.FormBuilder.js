@@ -269,7 +269,7 @@ L.FormBuilder.Input = L.FormBuilder.Element.extend({
     },
 
     type: function () {
-        return 'text';
+        return this.options.type || 'text';
     },
 
     value: function () {
