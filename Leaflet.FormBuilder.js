@@ -1,4 +1,3 @@
-
 L.FormBuilder = L.Evented.extend({
 
     options: {
@@ -130,7 +129,7 @@ L.FormBuilder.Element = L.Evented.extend({
         this.obj = this.builder.obj;
         this.form = this.builder.form;
         this.field = field;
-        this.options = options;
+        L.setOptions(this, options);
         this.fieldEls = this.field.split('.');
         this.name = this.builder.getName(field);
         this.parentNode = this.getParentNode();
@@ -329,6 +328,10 @@ L.FormBuilder.BlurIntInput = L.FormBuilder.BlurInput.extend({
 
 
 L.FormBuilder.FloatMixin = {
+
+    options: {
+        step: 'any'
+    },
 
     value: function () {
         return !isNaN(this.input.value) && this.input.value !== '' ? parseFloat(this.input.value): undefined;
