@@ -329,10 +329,6 @@ L.FormBuilder.BlurIntInput = L.FormBuilder.BlurInput.extend({
 
 L.FormBuilder.FloatMixin = {
 
-    options: {
-        step: 'any'
-    },
-
     value: function () {
         return !isNaN(this.input.value) && this.input.value !== '' ? parseFloat(this.input.value): undefined;
     },
@@ -344,10 +340,20 @@ L.FormBuilder.FloatMixin = {
 };
 
 L.FormBuilder.FloatInput = L.FormBuilder.Input.extend({
+
+    options: {
+        step: 'any'
+    },
+
     includes: [L.FormBuilder.FloatMixin]
 });
 
 L.FormBuilder.BlurFloatInput = L.FormBuilder.BlurInput.extend({
+
+    options: {
+        step: 'any'
+    },
+
     includes: [L.FormBuilder.FloatMixin]
 });
 
