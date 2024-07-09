@@ -86,9 +86,9 @@ L.FormBuilder = L.Evented.extend({
     }
   },
 
-  resetField: function (field) {
-    const backup = this.helpers[field].backup
-    this.setter(field, backup)
+  restoreField: function (field) {
+    const initial = this.helpers[field].initial
+    this.setter(field, initial)
   },
 
   getName: (field) => {
@@ -216,7 +216,8 @@ L.FormBuilder.Textarea = L.FormBuilder.Element.extend({
   },
 
   fetch: function () {
-    const value = (this.backup = this.toHTML())
+    const value = this.toHTML()
+    this.initial = value
     if (value) {
       this.input.value = value
     }
@@ -262,8 +263,9 @@ L.FormBuilder.Input = L.FormBuilder.Element.extend({
   },
 
   fetch: function () {
-    this.input.value = this.backup =
-      typeof this.toHTML() !== 'undefined' ? this.toHTML() : null
+    const value = this.toHTML() !== undefined ? this.toHTML() : null
+    this.initial = value
+    this.input.value = value
   },
 
   getSyncEvent: () => 'input',
@@ -287,13 +289,20 @@ L.FormBuilder.Input = L.FormBuilder.Element.extend({
 L.FormBuilder.BlurInput = L.FormBuilder.Input.extend({
   getSyncEvent: () => 'blur',
 
+  build: function () {
+    L.FormBuilder.Input.prototype.build.call(this)
+    L.DomEvent.on(this.input, 'focus', this.fetch, this)
+  },
+
   finish: function () {
     this.sync()
     L.FormBuilder.Input.prototype.finish.call(this)
   },
 
   sync: function () {
-    if (this.backup !== this.value()) {
+    // Do not commit any change if user only clicked
+    // on the field than clicked outside
+    if (this.initial !== this.value()) {
       L.FormBuilder.Input.prototype.sync.call(this)
     }
   },
@@ -355,8 +364,8 @@ L.FormBuilder.CheckBox = L.FormBuilder.Element.extend({
   },
 
   fetch: function () {
-    this.backup = this.toHTML()
-    this.input.checked = this.backup === true
+    this.initial = this.toHTML()
+    this.input.checked = this.initial === true
   },
 
   value: function () {
